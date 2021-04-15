@@ -72,20 +72,20 @@ void display_data(char mybuf[]){
     }
 
 
-    SERIAL_PORT_MONITOR.println(mylen);
-    SERIAL_PORT_MONITOR.print("Hex ");
+//    SERIAL_PORT_MONITOR.println(mylen);
+//    SERIAL_PORT_MONITOR.print("Hex ");
     for (int i = 0; i < mylen; i++) { // print the data
         
         SERIAL_PORT_MONITOR.print(mybuf[i], HEX);
         SERIAL_PORT_MONITOR.print(" ");
     }
     SERIAL_PORT_MONITOR.println();
-    SERIAL_PORT_MONITOR.print("Dec ");
-    for (int i = 0; i < mylen; i++) { // print the data
-        
-        SERIAL_PORT_MONITOR.print(mybuf[i]);
-        SERIAL_PORT_MONITOR.print(" ");
-    }
+//    SERIAL_PORT_MONITOR.print("Dec ");
+//    for (int i = 0; i < mylen; i++) { // print the data
+//        
+//        SERIAL_PORT_MONITOR.print(mybuf[i]);
+//        SERIAL_PORT_MONITOR.print(" ");
+//    }
     SERIAL_PORT_MONITOR.println();
 }
 

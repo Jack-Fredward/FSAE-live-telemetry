@@ -75,8 +75,8 @@ void loop()
 {
 //  SerialUSB.println("Sending message");
 //  SerialUSB.print("Avail: ");
-  SerialUSB.print(Serial1.available());
-  SerialUSB.print(" ");
+//  SerialUSB.print(Serial1.available());
+//  SerialUSB.print(" ");
 //  SerialUSB.println();
 //  myData.mybuf[0] = (char)Serial1.read();
 //  SerialUSB.print(myData.mybuf[0]);
@@ -91,9 +91,10 @@ void loop()
 //  }
 //  Serial1.flush();
   if (Serial1.available()){
-  myData.number = Serial1.read();
+    SerialUSB.print(Serial1.read());
+//  myData.number = Serial1.read();
 //  SerialUSB.print("Data: ");
-  SerialUSB.print(myData.number);
+//  SerialUSB.print(myData.number);
   SerialUSB.println();
   }
 //  Serial1.flush(); 
