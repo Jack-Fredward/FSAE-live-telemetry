@@ -27,15 +27,23 @@ long timeSinceLastPacket = 0; //Tracks the time stamp of last packet received
 float frequency = 921.2; //Broadcast frequency
 char mystr[10];
 
+struct dataStruct{
+  char mybuf[8];
+  int number;
+}myData;
+
+byte tx_buf[sizeof(myData)] = {0};
+
 void setup()
 {
   pinMode(LED, OUTPUT);
 
-  SerialUSB.begin(9600);
-  Serial1.begin(9600);
+  SerialUSB.begin(115200);
+  Serial1.begin(115200);
   // It may be difficult to read serial messages on startup. The following line
   // will wait for serial to be ready before continuing. Comment out if not needed.
-  while(!SerialUSB); 
+//  while(!SerialUSB);
+  while(!Serial1); 
   SerialUSB.println("RFM Client!"); 
 
   //Initialize the Radio.
@@ -65,36 +73,69 @@ void setup()
 
 void loop()
 {
-  SerialUSB.println("Sending message");
-
+//  SerialUSB.println("Sending message");
+//  SerialUSB.print("Avail: ");
+//  SerialUSB.print(Serial1.available());
+//  SerialUSB.print(" ");
+//  SerialUSB.println();
+//  myData.mybuf[0] = (char)Serial1.read();
+//  SerialUSB.print(myData.mybuf[0]);
+//  char test = (char)Serial1.read();
+//  SerialUSB.print(test);
+//  SerialUSB.println();
+  
+//  for(int i=0;i<5;i++){
+////    SerialUSB.println("In for loop");
+//    myData.mybuf[i] = (char)Serial1.read();
+//    SerialUSB.print(myData.mybuf[i]);
+//  }
+//  Serial1.flush();
+  if (Serial1.available()){
+    SerialUSB.print(Serial1.read());
+//  myData.number = Serial1.read();
+//  SerialUSB.print("Data: ");
+//  SerialUSB.print(myData.number);
+  SerialUSB.println();
+  }
+//  Serial1.flush(); 
   //Send a message to the other radio
-  Serial1.readBytes(mystr,5);
-  uint8_t toSend[] = {mystr};//(const uint8_t*)mystr;
+//  for (int i=0; i++; i<8){
+//    myData.mybuf[i]= Serial1.read();
+//    SerialUSB.print(myData.mybuf[i]);
+//  }
+//  uint8_t toSend[8];//(const uint8_t*)mystr;
+//  for (int i=0; i++; i<8){
+//    toSend[i] = mybuf[i];
+//  }
+
+  memcpy(tx_buf, &myData, sizeof(myData));
+  byte zize=sizeof(myData);
+  
 //  uint8_t toSend[] = mystr;
 //  uint8_t toSend[] = "Hi there!";
   //sprintf(toSend, "Hi, my counter is: %d", packetCounter++);
 //  rf95.send(toSend, sizeof(toSend));
-  rf95.send(toSend, sizeof(toSend));
+  rf95.send((uint8_t *)tx_buf, zize);
   rf95.waitPacketSent();
 
   // Now wait for a reply
-  byte buf[RH_RF95_MAX_MESSAGE_LEN];
-  byte len = sizeof(buf);
+//  byte buf[RH_RF95_MAX_MESSAGE_LEN];
+//  byte len = sizeof(buf);
 
-  if (rf95.waitAvailableTimeout(2000)) {
-    // Should be a reply message for us now
-    if (rf95.recv(buf, &len)) {
-      SerialUSB.print("Got reply: ");
-      SerialUSB.println((char*)buf);
-      //SerialUSB.print(" RSSI: ");
-      //SerialUSB.print(rf95.lastRssi(), DEC);
-    }
-    else {
-      SerialUSB.println("Receive failed");
-    }
-  }
-  else {
-    SerialUSB.println("No reply, is the receiver running?");
-  }
-  delay(500);
+//  if (rf95.waitAvailableTimeout(2000)) {
+//    // Should be a reply message for us now
+//    if (rf95.recv(buf, &len)) {
+//      SerialUSB.print("Got reply: ");
+//      SerialUSB.println((char*)buf);
+//      //SerialUSB.print(" RSSI: ");
+//      //SerialUSB.print(rf95.lastRssi(), DEC);
+//    }
+//    else {
+//      SerialUSB.println("Receive failed");
+//    }
+//  }
+//  else {
+//    SerialUSB.println("No reply, is the receiver running?");
+//  }
+  delay(10);
 }
