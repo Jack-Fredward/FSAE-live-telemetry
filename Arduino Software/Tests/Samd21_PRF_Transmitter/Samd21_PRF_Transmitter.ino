@@ -73,6 +73,7 @@ void setup()
 
 void loop()
 {
+//  SerialUSB.print("Test");
 //  SerialUSB.println("Sending message");
 //  SerialUSB.print("Avail: ");
 //  SerialUSB.print(Serial1.available());
@@ -89,9 +90,9 @@ void loop()
 //    myData.mybuf[i] = (char)Serial1.read();
 //    SerialUSB.print(myData.mybuf[i]);
 //  }
-//  Serial1.flush();
+  Serial1.flush();
   if (Serial1.available()){
-    SerialUSB.print(Serial1.read());
+    SerialUSB.print(Serial1.read(), HEX);
 //  myData.number = Serial1.read();
 //  SerialUSB.print("Data: ");
 //  SerialUSB.print(myData.number);
@@ -108,15 +109,19 @@ void loop()
 //    toSend[i] = mybuf[i];
 //  }
 
-  memcpy(tx_buf, &myData, sizeof(myData));
-  byte zize=sizeof(myData);
+
+//THIS IS WHERE I AM WORKING
+//  memcpy(tx_buf, &myData, sizeof(myData));
+//  byte zize=sizeof(myData);
   
 //  uint8_t toSend[] = mystr;
 //  uint8_t toSend[] = "Hi there!";
   //sprintf(toSend, "Hi, my counter is: %d", packetCounter++);
 //  rf95.send(toSend, sizeof(toSend));
-  rf95.send((uint8_t *)tx_buf, zize);
-  rf95.waitPacketSent();
+
+//THIS IS ALSO WHERE I AM WORKING
+//  rf95.send((uint8_t *)tx_buf, zize);
+//  rf95.waitPacketSent();
 
   // Now wait for a reply
 //  byte buf[RH_RF95_MAX_MESSAGE_LEN];
