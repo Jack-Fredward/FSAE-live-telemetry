@@ -38,6 +38,7 @@ mcp2515_can CAN(SPI_CS_PIN); // Set CS pin
 // this is the initial setup that the arduino needs in order to function
 void setup() {
     SERIAL_PORT_MONITOR.begin(115200);
+    Serial.begin(115200);
 
     while (CAN_OK != CAN.begin(CAN_1000KBPS)) {             // init can bus : baudrate = 1000k
         SERIAL_PORT_MONITOR.println("CAN init fail, retry...");
@@ -83,12 +84,22 @@ void display_data(char mybuf[]){
     }
     SERIAL_PORT_MONITOR.println();
 //    SERIAL_PORT_MONITOR.print("Dec ");
-//    for (int i = 0; i < mylen; i++) { // print the data
-//        
-//        SERIAL_PORT_MONITOR.print(mybuf[i]);
-//        SERIAL_PORT_MONITOR.print(" ");
-//    }
+    for (int i = 0; i < mylen; i++) { // print the data
+        
+        SERIAL_PORT_MONITOR.print((char)mybuf[i]);
+        SERIAL_PORT_MONITOR.print(" ");
+    }
     SERIAL_PORT_MONITOR.println();
+}
+
+void send_data(unsigned char mybuf[], int len){
+    for (int i=0; i<len;i++){
+      Serial.print(mybuf[i]);  
+    }
+    Serial.println();
+//    Serial.println((char)mybuf[0]);
+//    Serial.println(mybuf[1]);
+//    Serial.println(mybuf[2]);
 }
 
 // the main body of the program
@@ -97,7 +108,7 @@ void display_data(char mybuf[]){
 void loop() {
     unsigned char len = 0;
     unsigned char buf[8];
-    unsigned char mybuf[8];
+    unsigned char mybuf[9];
 //    int mylen = 0;
 
     if (CAN_MSGAVAIL == CAN.checkReceive()) {         // check if data coming
@@ -111,33 +122,53 @@ void loop() {
             mybuf[0]='S';
             mybuf[1]=buf[0];
             mybuf[2]=buf[1];
+            Serial.print('S');
+            Serial.print(buf[0]);
+            Serial.print(buf[1]);
+            Serial.println();
             mybuf[3]='M';
             mybuf[4]=buf[2];
             mybuf[5]=buf[3];
+            Serial.print('M');
+            Serial.print(buf[2]);
+            Serial.print(buf[3]);
+            Serial.println();
             mybuf[6]='P';
             mybuf[7]=buf[6];
             mybuf[8]=buf[7];
-            display_data(mybuf);
+            Serial.print('P');
+            Serial.print(buf[6]);
+            Serial.print(buf[7]);
+            Serial.println();
+//            display_data(mybuf);
+//            send_data(mybuf, 9);
           break;
           case 1601:
             mybuf[0]='R';
             mybuf[1]=buf[4];
             mybuf[2]=buf[5];
-            display_data(mybuf);
+            Serial.print('R');
+            Serial.print(buf[4]);
+            Serial.print(buf[5]);
+            Serial.println();
+//            display_data(mybuf);
+//            send_data(mybuf,3);
 
           break;
           case 1602:
           mybuf[0]='T';
           mybuf[1]=buf[0];
           mybuf[2]=buf[1];
-          display_data(mybuf);
+//          display_data(mybuf);
+//          send_data(mybuf,3);
 
           break;
           case 1604:
           mybuf[0]='O';
           mybuf[1]=buf[6];
           mybuf[2]=buf[7];
-          display_data(mybuf);
+//          display_data(mybuf);
+//          send_data(mybuf, 3);
 
           break;
           case 1609:
@@ -145,13 +176,15 @@ void loop() {
           mybuf[1]=buf[0];
           mybuf[2]='V';
           mybuf[3]=buf[5];
-          display_data(mybuf);
+//          display_data(mybuf);
+//          send_data(mybuf, 4);
 
           break;
           case 1613:
           mybuf[0]='G';
           mybuf[1]=buf[6];
-          display_data(mybuf);
+//          display_data(mybuf);
+//          send_data(mybuf, 2);
 
           break;
         }

@@ -26,7 +26,7 @@ long timeSinceLastPacket = 0; //Tracks the time stamp of last packet received
 float frequency = 921.2;
 
 struct dataStruct{
-  unsigned char mybuf[8];
+  unsigned char mybuf[2];
 }myData;
 
 void setup()
@@ -76,6 +76,9 @@ void loop()
       SerialUSB.print("Got message: ");
       memcpy(&myData, buf, sizeof(myData));
       SerialUSB.print((char*)myData.mybuf);
+      SerialUSB.println();
+      SerialUSB.println(myData.mybuf[1]);
+      SerialUSB.print((((int)myData.mybuf[1])/6.89475729)/10);
       //SerialUSB.print(" RSSI: ");
       //SerialUSB.print(rf95.lastRssi(), DEC);
       SerialUSB.println();
