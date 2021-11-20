@@ -76,12 +76,18 @@ void loop()
   unsigned char temp;
   unsigned char tempArr[10];
 
+  for (int i=0; i<10; i++){
+    tempArr[i] = ' ';
+    myData.mybuf[i] = ' ';
+  }
+
   
 //  if (temp != 255)
   if (Serial1.available() > 0) {
 //    temp=Serial1.read();
 //    if ((char)temp=='f') {
-      Serial1.readBytesUntil('\n',tempArr, 10);
+      Serial1.readBytesUntil(',',tempArr, 10);
+      if ((char)tempArr[0]=='F'){
 //      SerialUSB.print("Temp = ");
 //      SerialUSB.print((char)temp);
       SerialUSB.print("TempArr = ");
@@ -96,7 +102,7 @@ void loop()
         myData.mybuf[i]=tempArr[i];
         
       }
-      SerialUSB.println();
+//      SerialUSB.println();
 //    }
   
 
@@ -107,31 +113,33 @@ void loop()
   //  uint8_t toSend[] = mystr;
   //  uint8_t toSend[] = "Hi there!";
     //sprintf(toSend, "Hi, my counter is: %d", packetCounter++);
-  //  rf95.send(toSend, sizeof(toSend));
+//    rf95.send(toSend, sizeof(toSend));
   
   //THIS IS ALSO WHERE I AM WORKING
-  //  SerialUSB.print("Sent Msg");
-//    rf95.send((uint8_t *)tx_buf, zize);
-//    rf95.waitPacketSent();
+    
+    rf95.send((uint8_t *)tx_buf, zize);
+    rf95.waitPacketSent();
+    SerialUSB.print("Sent Msg");
 //  
 //    // Now wait for a reply
-//    byte buf[RH_RF95_MAX_MESSAGE_LEN];
-//    byte len = sizeof(buf);
-//    if (rf95.waitAvailableTimeout(2000)) {
-//      //Should be a reply message for us now
-//      if (rf95.recv(buf, &len)) {
+    byte buf[RH_RF95_MAX_MESSAGE_LEN];
+    byte len = sizeof(buf);
+    if (rf95.waitAvailableTimeout(2000)) {
+//      Should be a reply message for us now
+      if (rf95.recv(buf, &len)) {
 //        SerialUSB.print("Got reply: ");
 //        SerialUSB.println((char*)buf);
 //        SerialUSB.print(" RSSI: ");
 //        SerialUSB.print(rf95.lastRssi(), DEC);
-//      }
-//      else {
-//        SerialUSB.println("Receive failed");
-//      }
-//    }
-//    else {
-//      SerialUSB.println("No reply, is the receiver running?");
-//    }
+      }
+      else {
+        SerialUSB.println("Receive failed");
+      }
+    }
+    else {
+      SerialUSB.println("No reply, is the receiver running?");
+    }
+  }
   }
   delay(10);
 }
