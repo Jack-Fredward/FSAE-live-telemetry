@@ -30,26 +30,26 @@ char mystr[10];
 struct dataStruct {
   unsigned char oilTempData[10];
   unsigned char waterTempData[10];
-  unsigned char oilPresurData[10];
+  unsigned char oilPressureData[10];
   unsigned char lambdaData[10];
   unsigned char gearData[10];
   unsigned char throttlePPosData[10];
-  unsigned char brakePresurFData[10];
-  unsigned char brakePresurRData[10];
-  unsigned char fuelPresurData[10];
-  unsigned char engineSpedData[10];
+  unsigned char brakePressureFData[10];
+  unsigned char brakePressureRData[10];
+  unsigned char fuelPressureData[10];
+  unsigned char engineSpeedData[10];
 } myData;
 
 char oilTemp = 'O';
 char waterTemp = 'W';
-char oilPresur = 'P';
+char oilPressure = 'P';
 char lambda = 'L';
 char gear = 'G';
 char throttlePPos = 'T';
-char brakePresurF = 'F';
-char brakePresurR = 'R';
-char fuelPresur = 'U';
-char engineSped = 'E';
+char brakePressureF = 'F';
+char brakePressureR = 'R';
+char fuelPressure = 'U';
+char engineSpeed = 'E';
 
 byte tx_buf[sizeof(myData)] = {0};
 
@@ -120,12 +120,12 @@ void loop()
         myData.waterTempData[i] = tempArr[i];
       }
     }
-    else if ((char)tempArr[0] == oilPresur) {
+    else if ((char)tempArr[0] == oilPressure) {
       SerialUSB.print("TempArr = ");
       SerialUSB.print((char*)tempArr);
       SerialUSB.println();
       for (int i = 0; i < 10; i++) {
-        myData.oilPresurData[i] = tempArr[i];
+        myData.oilPressureData[i] = tempArr[i];
       }
     }
     else if ((char)tempArr[0] == lambda) {
@@ -154,36 +154,36 @@ void loop()
 
       }
     }
-    else if ((char)tempArr[0] == brakePresurF) {
+    else if ((char)tempArr[0] == brakePressureF) {
       SerialUSB.print("TempArr = ");
       SerialUSB.print((char*)tempArr);
       SerialUSB.println();
       for (int i = 0; i < 10; i++) {
-        myData.brakePresurFData[i] = tempArr[i];
+        myData.brakePressureFData[i] = tempArr[i];
       }
     }
-    else if ((char)tempArr[0] == brakePresurR) {
+    else if ((char)tempArr[0] == brakePressureR) {
       SerialUSB.print("TempArr = ");
       SerialUSB.print((char*)tempArr);
       SerialUSB.println();
       for (int i = 0; i < 10; i++) {
-        myData.brakePresurRData[i] = tempArr[i];
+        myData.brakePressureRData[i] = tempArr[i];
       }
     }
-    else if ((char)tempArr[0] == fuelPresur) {
+    else if ((char)tempArr[0] == fuelPressure) {
       SerialUSB.print("TempArr = ");
       SerialUSB.print((char*)tempArr);
       SerialUSB.println();
       for (int i = 0; i < 10; i++) {
-        myData.fuelPresurData[i] = tempArr[i];
+        myData.fuelPressureData[i] = tempArr[i];
       }
     }
-    else if ((char)tempArr[0] == engineSped) {
+    else if ((char)tempArr[0] == engineSpeed) {
       SerialUSB.print("TempArr = ");
       SerialUSB.print((char*)tempArr);
       SerialUSB.println();
       for (int i = 0; i < 10; i++) {
-        myData.engineSpedData[i] = tempArr[i];
+        myData.engineSpeedData[i] = tempArr[i];
       }
     }
 
