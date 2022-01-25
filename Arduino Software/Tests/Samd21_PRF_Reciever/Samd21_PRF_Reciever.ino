@@ -34,8 +34,10 @@ void setup()
   pinMode(LED, OUTPUT);
 
   SerialUSB.begin(115200);
+  Serial1.begin(115200);
   // It may be difficult to read serial messages on startup. The following
   // line will wait for serial to be ready before continuing. Comment out if not needed.
+  while(!SerialUSB);
   while(!SerialUSB);
   SerialUSB.println("RFM Server!");
 
@@ -64,6 +66,7 @@ void setup()
 
 void loop()
 {
+//  SerialUSB.println("Reciver loop");
   if (rf95.available()){
     // Should be a message for us now
     uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
@@ -76,6 +79,7 @@ void loop()
       SerialUSB.print("Got message: ");
       memcpy(&myData, buf, sizeof(myData));
       SerialUSB.print((char*)myData.mybuf);
+      Serial1.println((char*)myData.mybuf);
       //SerialUSB.print(" RSSI: ");
       //SerialUSB.print(rf95.lastRssi(), DEC);
       SerialUSB.println();

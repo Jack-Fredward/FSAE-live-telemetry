@@ -42,7 +42,7 @@ void setup()
   // It may be difficult to read serial messages on startup. The following line
   // will wait for serial to be ready before continuing. Comment out if not needed.
   while(!SerialUSB);
-//  while(!Serial1); 
+  while(!Serial1);
   SerialUSB.println("RFM Client!"); 
 
   //Initialize the Radio.
@@ -87,7 +87,10 @@ void loop()
 //    temp=Serial1.read();
 //    if ((char)temp=='f') {
       Serial1.readBytesUntil(',',tempArr, 10);
-      if ((char)tempArr[0]=='F'){
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
+      if (((char)tempArr[0]=='F') || ((char)tempArr[0]=='f')){
 //      SerialUSB.print("Temp = ");
 //      SerialUSB.print((char)temp);
       SerialUSB.print("TempArr = ");
@@ -119,7 +122,7 @@ void loop()
     
     rf95.send((uint8_t *)tx_buf, zize);
     rf95.waitPacketSent();
-    SerialUSB.print("Sent Msg");
+    SerialUSB.println("Sent Msg");
 //  
 //    // Now wait for a reply
     byte buf[RH_RF95_MAX_MESSAGE_LEN];
