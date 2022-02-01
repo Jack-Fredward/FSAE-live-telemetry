@@ -31,12 +31,16 @@ int convertHexToDec(unsigned char toConvert[20]){
   Serial.println();
   int result = 0;
   for(int i=lastPos; i>0; i--){
+//    Serial.print("Converted char before power function: ")
+//    Serial.print(((char)toConvert[i]- '0'));
     result += ((char)toConvert[i]- '0')*power(10,(lastPos-i));
   }
+  Serial.print("Int: ");
+  Serial.println(result);
   return result;
 }
 
-float getFuelPressure(int rawValue){
+float getFuelPressure(long rawValue){
   return ((rawValue/6.89475729)/100);
 }
 
@@ -76,8 +80,15 @@ void loop() {
 //    }
 
     if((FPFirstByte != 0) && (FPSecondByte != 0)){
-      Serial.print("Combined Fuel Pressure: ");
-      Serial.println(getFuelPressure(FPFirstByte+FPSecondByte));
+      
+//      if (FPFirstByte > 0){
+        Serial.print("Combined Fuel Pressure: ");
+        Serial.println(getFuelPressure(FPFirstByte*FPSecondByte));
+        Serial.print("Andrew's Number (598): "); 
+        Serial.println(((FPFirstByte * 598) + FPSecondByte)*0.0143);
+        Serial.print("Andrew's Number (256): "); 
+        Serial.println(((FPFirstByte * 256) + FPSecondByte)*0.0143);
+//      }
     }
       //Serial.println((char)in_buff[1]);
       //Serial.println((char)in_buff[2]);
@@ -117,5 +128,6 @@ void loop() {
     // say what you got:
     //Serial.print("I received: ");
     //Serial.println((char*)in_buff);
+    Serial.println();
   }
 }
