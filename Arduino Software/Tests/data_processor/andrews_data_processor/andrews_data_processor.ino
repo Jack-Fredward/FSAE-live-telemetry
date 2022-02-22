@@ -40,13 +40,78 @@ int convertHexToDec(unsigned char toConvert[20]){
   return result;
 }
 
-float getFuelPressure(long rawValue, int divisorConst){
+// function to convert kPa to psi (6.894 kPa = 1 psi)
+// Apply to sensors: Fuel Pressure, Oil Pressure, Front & Rear Break pressures
+float convert_kPa_psi(long rawValue, int divisorConst){
   return ((rawValue/6.89475729)/divisorConst);
+}
+
+// Apply to sensors: Engine Speed
+float convert_Hz_rpm(long rawValue, int divisorConst){
+  return (rawValue/60/divisorConst);
+}
+
+// Apply to sensors: Engine Coolant Temp, Engine Oil Temp
+float convert_C_F(long rawValue, float divisorConst){
+//  Serial.print("Raw Value:");
+//  Serial.println(rawValue);
+//  int converted_sensor_C = (rawValue*10)-400;
+//  Serial.print("converted sensor C:");
+//  Serial.println(converted_sensor_C);
+//  converted_sensor_C = converted_sensor_C/divisorConst;
+//  Serial.print("converted sensor C / divisor Const:");
+//  Serial.println(converted_sensor_C);
+//  int converted_sensor_F = converted_sensor_C*(1.8)+32;
+//  Serial.print("converted sensor F:");
+//  Serial.println(converted_sensor_F);
+
+//  Serial.print("Raw Value: ");
+//  Serial.println(rawValue);
+//  int converted_sensor_C = (rawValue*10)-400;
+//  Serial.print("converted sensor C: ");
+//  Serial.println(converted_sensor_C);
+//  int converted_sensor_F = converted_sensor_C*(1.8)+32;
+//  Serial.print("converted sensor F: ");
+//  Serial.println(converted_sensor_F);
+//  converted_sensor_F = converted_sensor_F/divisorConst;
+//  Serial.print("converted sensor F / divisor Const: ");
+
+  Serial.print("Raw Value: ");
+  Serial.println(rawValue);
+  int rawValue_d = rawValue/divisorConst;
+  Serial.print("rawValue / divisor Const: ");
+  Serial.println(rawValue_d);
+  int converted_sensor_C = (rawValue_d*10)-400;
+  Serial.print("converted sensor C: ");
+  Serial.println(converted_sensor_C);
+  int converted_sensor_F = converted_sensor_C*0.1*(1.8)+32;
+  Serial.print("converted sensor F: ");
+  Serial.println(converted_sensor_F);
+
+  return converted_sensor_F;
+//  return ((((((rawValue*10)-400)/divisorConst)*(1.8))+32));
+}
+
+// Apply to sensors: Gear
+int convert_gear(long rawValue){
+  return ((rawValue-320)/10);
+}
+
+// Apply to sensors: Trottle Position
+float convert_throttle(long rawValue, float divisorConst){
+  return (rawValue/divisorConst);
+}
+
+// Apply to sensors: Exhaust Lambda
+float convert_lambda(long rawValue, float divisorConst){
+  return (rawValue/divisorConst);
 }
 
 int andrewsConversion(int firstByte, int secondByte){
   return (((FPFirstByte+16) * 256) + (FPSecondByte+16));
 }
+
+
 
 
 void loop() {
@@ -68,19 +133,19 @@ void loop() {
     if ((char)in_buff[0] == 'F') {
       int rawFuelPressure2 = convertHexToDec(in_buff);
 //      Serial.print("Fuel Pressure2: ");
-//      Serial.println(getFuelPressure(rawFuelPressure2));
+//      Serial.println(convert_kPa_psi(rawFuelPressure2));
       FPSecondByte=rawFuelPressure2;
     }
     if ((char)in_buff[0] == 'f') {
       int rawFuelPressure1 = convertHexToDec(in_buff);
 //      Serial.print("Fuel Pressure1: ");
-//      Serial.println(getFuelPressure(rawFuelPressure1));
+//      Serial.println(convert_kPa_psi(rawFuelPressure1));
       FPFirstByte=rawFuelPressure1;
     }
 //    } else if ((char)in_buff[0] == 'f'){
 //      int rawFuelPressure1 = convertHexToDec(in_buff);
 //      Serial.print("Fuel Pressure1: ");
-//      Serial.println(getFuelPressure(rawFuelPressure1));
+//      Serial.println(convert_kPa_psi(rawFuelPressure1));
 //      FPFirstByte = rawFuelPressure1;
 //    }
 
@@ -91,20 +156,42 @@ void loop() {
 //        Serial.println(((((FPFirstByte+16)/10) * 256) + ((FPSecondByte+16)/10))*0.0145);
 
 //        Serial.print("JP's Fuel Pressure: ");
-//        Serial.println(getFuelPressure((((FPFirstByte+16)) * 256) + ((FPSecondByte+16)),100));
-//        Serial.println(getFuelPressure(andrewsConversion(FPFirstByte, FPSecondByte),100));
+//        Serial.println(convert_kPa_psi((((FPFirstByte+16)) * 256) + ((FPSecondByte+16)),100));
+//        Serial.println(convert_kPa_psi(andrewsConversion(FPFirstByte, FPSecondByte),100));
 //        Serial.print("First Byte: ");
 //        Serial.println(FPFirstByte);
 //        Serial.print("Second Byte: ");
 //        Serial.println(FPSecondByte);
 //        Serial.print("Break Pressure: (psi)");
-        Serial.println(getFuelPressure(andrewsConversion(FPFirstByte, FPSecondByte),100));
+
+        Serial.print("First Byte:");
+        Serial.println(FPFirstByte);
+        Serial.print("Second Byte:");
+        Serial.println(FPSecondByte);
+        Serial.print("Just Andrews Conversion: ");
+        Serial.println(andrewsConversion(-16, FPSecondByte));
+        //Serial.print("Engine Speed:");
+        //Serial.println(convert_Hz_rpm(andrewsConversion(FPFirstByte, FPSecondByte),100));
+//         Serial.print("Coolant Temp (F):");
+         Serial.println(convert_C_F(andrewsConversion(-16, FPSecondByte),10));
+        //Serial.print("Raw Value from 
+        //Serial.println(convert_kPa_psi(andrewsConversion(FPFirstByte, FPSecondByte),100));
+        // Serial.print("Car Gear:");
+        // Serial.println(convert_gear(andrewsConversion(-16, FPSecondByte)));
+//        Serial.print("Throttle Position:");
+//        Serial.println(convert_throttle(andrewsConversion(FPFirstByte, FPSecondByte),100));
+//        Serial.print("Exhaust Lambda:");
+//        Serial.println(convert_lambda(andrewsConversion(-16, FPSecondByte),1000));
+        
+
+        
+        
 //      
 
 //      }
 //      else{
 //        Serial.print("Combined Fuel Pressure: ");
-//        Serial.println(getFuelPressure(FPSecondByte));
+//        Serial.println(convert_kPa_psi(FPSecondByte));
 //        Serial.print("Andrew's Number (2544): ");
 //        Serial.println((FPSecondByte)*0.0143);
 //        Serial.print("Andrew's Number (256): ");
@@ -127,7 +214,7 @@ void loop() {
 //      Serial.println(convertHexToDec(in_buff));
 //      int fuelPressureRaw = convertHexToDec(in_buff);
      
-//      Serial.println(getFuelPressure(fuelPressureRaw));
+//      Serial.println(convert_kPa_psi(fuelPressureRaw));
       //Serial.println(a);
       //Serial.println(b);
       //Serial.println(c);
