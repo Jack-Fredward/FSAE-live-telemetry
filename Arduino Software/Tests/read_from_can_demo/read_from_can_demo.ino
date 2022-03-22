@@ -7,6 +7,7 @@
 // #define CAN_2518FD
 
 // Set SPI CS Pin according to your hardware
+// Changed stuff
 
 #if defined(SEEED_WIO_TERMINAL) && defined(CAN_2518FD)
 // For Wio Terminal w/ MCP2518FD RPi Hat：
