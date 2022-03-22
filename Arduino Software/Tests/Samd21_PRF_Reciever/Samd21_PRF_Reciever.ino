@@ -71,6 +71,14 @@ void setup()
    rf95.setTxPower(14, false);
 }
 
+void sendData(unsigned char *dataStructArray){
+  for (int i=0; i<5; i++){
+    Serial1.print((char)dataStructArray[i]);
+  }
+  Serial1.println();
+}
+
+
 void loop()
 {
 //  SerialUSB.println("Reciver loop");
@@ -102,11 +110,14 @@ void loop()
 //      SerialUSB.println((char*)packetData.rearBreakPressureSecondByte);
 //      Serial1.println((char*)packetData.rearBreakPressureSecondByte);
 
-      for (int i = 0; i < 5; i++){
-        Serial1.print((char)packetData.frontBreakPressureFirstByte[i]);
-//        SerialUSB.print((char)packetData.frontBreakPressureFirstByte[i]);
-      }
-      Serial1.println();
+//      for (int i = 0; i < 5; i++){
+//        Serial1.print((char)packetData.frontBreakPressureFirstByte[i]);
+////        SerialUSB.print((char)packetData.frontBreakPressureFirstByte[i]);
+//      }
+//      Serial1.println();
+
+      sendData(packetData.frontBreakPressureFirstByte);
+      
 //      SerialUSB.println();
       for (int i = 0; i < 5; i++){
         Serial1.print((char)packetData.frontBreakPressureSecondByte[i]);

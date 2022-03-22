@@ -77,6 +77,18 @@ void setup()
 }
 int counter = 0;
 
+void clearArray(unsigned char *array){
+  for (int i=0; i<5; i++){
+    array[i] = ' ';
+  }
+}
+
+void insertData(unsigned char *dataStructArray, unsigned char *tempArr){
+  for (int i=0; i<5; i++){
+    dataStructArray[i]=tempArr[i];
+  }
+}
+
 void loop()
 {
   //  SerialUSB.print("Waiting...");
@@ -86,39 +98,28 @@ void loop()
   for (int i = 0; i < 5; i++){
     tempArr[i] = ' ';
   }
-
-//  for (int i = 0; i < 5; i++) {
-////    tempArr[i] = ' ';
-//    //    myData.mybuf[i] = ' ';
-//    packetData.frontBreakPressureFirstByte[i] = ' ';
-//    packetData.frontBreakPressureSecondByte[i] = ' ';
-//    packetData.rearBreakPressureFirstByte[i] = ' ';
-//    packetData.rearBreakPressureSecondByte[i] = ' ';
-//  }
-
-
-  //  if (temp != 255)
+  
   if (Serial1.available() > 0) {
-    //    temp=Serial1.read();
-    //    if ((char)temp=='f') {
     Serial1.readBytesUntil(',', tempArr, 5);
     //      SerialUSB.print("TempArr = ");
     //      SerialUSB.print((char*)tempArr);
     //      SerialUSB.println();
-//    SerialUSB.print("TempArr = ");
-//    SerialUSB.print((char*)tempArr);
-//    SerialUSB.println();
+    //    SerialUSB.print("TempArr = ");
+    //    SerialUSB.print((char*)tempArr);
+    //    SerialUSB.println();
     if (((char)tempArr[0] == 'f')) {
       SerialUSB.print("TempArr = ");
       SerialUSB.print((char*)tempArr);
       SerialUSB.println();
-      for (int i = 0; i < 5; i++){
-        packetData.frontBreakPressureFirstByte[i] = ' ';    
-      }
-      for (int i = 0; i < 5; i++) {
-        //        myData.mybuf[i]=tempArr[i];
-        packetData.frontBreakPressureFirstByte[i] = tempArr[i];
-      }
+//      for (int i = 0; i < 5; i++){
+//        packetData.frontBreakPressureFirstByte[i] = ' ';    
+//      }
+      clearArray(packetData.frontBreakPressureFirstByte);
+      
+//      for (int i = 0; i < 5; i++) {
+//        packetData.frontBreakPressureFirstByte[i] = tempArr[i];
+//      }
+      insertData(packetData.frontBreakPressureFirstByte, tempArr);
       counter++;
     }
 
@@ -163,7 +164,7 @@ void loop()
     }
 
 
-    //THIS IS WHERE I AM WORKING
+    // SENDING MESSAGE LOGIC
 //    SerialUSB.print("counter: ");
 //    SerialUSB.print(counter);
     if (counter == 4) {
