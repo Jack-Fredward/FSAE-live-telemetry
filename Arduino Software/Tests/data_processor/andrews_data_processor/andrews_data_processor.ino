@@ -97,7 +97,7 @@ float convert_lambda(long rawValue, float divisorConst){
   return (rawValue/divisorConst);
 }
 
-int andrewsConversion(int firstByte, int secondByte){
+long andrewsConversion(int firstByte, int secondByte){
   return (((firstByte+16) * 256) + (secondByte+16));
 }
 
@@ -116,7 +116,7 @@ void loop() {
     // read the incoming byte:
     // incomingByte = Serial.read();
     Serial.readBytesUntil('\n',in_buff,5);
-    Serial.println((char*)in_buff);
+//    Serial.println((char*)in_buff);
     if ((char)in_buff[0] == 't'){
       packetData.throttlePositionFirstByte = convertHexToDec(in_buff);
     }
@@ -166,6 +166,8 @@ void loop() {
       packetData.rearBrakePressureSecondByte = convertHexToDec(in_buff);
     }
 
+    Serial.println("--------------------------------------------------------------------------");
+
     if((packetData.throttlePositionFirstByte != 0) && (packetData.throttlePositionSecondByte != 0)){
       Serial.print("Throttle Position: ");
       Serial.println(convert_throttle(andrewsConversion(packetData.throttlePositionFirstByte, packetData.throttlePositionSecondByte), 100));
@@ -196,25 +198,25 @@ void loop() {
 
     if(packetData.engineOilTemperatureByte != 0){
       Serial.print("Engine Oil Temp: ");
-      Serial.println(convert_C_F(andrewsConversion(0, packetData.engineOilTemperatureByte), 100));
+      Serial.println(convert_C_F(andrewsConversion(-16, packetData.engineOilTemperatureByte), 10));
       packetData.engineOilTemperatureByte = 0;
     }
 
     if(packetData.coolantTemperatureByte != 0){
       Serial.print("Coolant Temp: ");
-      Serial.println(convert_C_F(andrewsConversion(0, packetData.coolantTemperatureByte), 100));
+      Serial.println(convert_C_F(andrewsConversion(-16, packetData.coolantTemperatureByte), 10));
       packetData.coolantTemperatureByte = 0;
     }
 
     if(packetData.gearByte != 0){
       Serial.print("Gear: ");
-      Serial.println(convert_gear(andrewsConversion(0, packetData.gearByte)));
+      Serial.println(convert_gear(andrewsConversion(-16, packetData.gearByte)));
       packetData.gearByte = 0;
     }
 
     if(packetData.exhaustLambdaByte != 0){
       Serial.print("Exhaust Lambda: ");
-      Serial.println(convert_lambda(andrewsConversion(0, packetData.exhaustLambdaByte), 100));
+      Serial.println(convert_lambda(andrewsConversion(-16, packetData.exhaustLambdaByte), 100));
       packetData.exhaustLambdaByte = 0;
     }
 
@@ -230,6 +232,6 @@ void loop() {
       packetData.rearBrakePressureFirstByte = 0;
       packetData.rearBrakePressureSecondByte = 0;
     }
-    Serial.println();
+//    Serial.println();
   }
 }

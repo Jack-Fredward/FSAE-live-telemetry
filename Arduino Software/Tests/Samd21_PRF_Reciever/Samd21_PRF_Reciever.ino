@@ -111,7 +111,7 @@ void loop()
 
       SerialUSB.println("Got message: ");
       memcpy(&packetData, buf, sizeof(packetData));
-      SerialUSB.println((char*)packetData.frontBrakePressureFirstByte);
+      SerialUSB.println((char*)packetData.throttlePositionFirstByte);
 //      Serial1.println((char*)packetData.frontBrakePressureFirstByte);
 //      SerialUSB.println((char*)packetData.frontBrakePressureSecondByte);
 //      Serial1.println((char*)packetData.frontBrakePressureSecondByte);

@@ -58,7 +58,7 @@ struct packetDataStruct {
   unsigned char rearBrakePressureSecondByte[5];
 } packetData;
 
-byte tx_buf[sizeof(myData)] = {0};
+byte tx_buf[sizeof(packetData)] = {0};
 
 void setup()
 {
@@ -97,30 +97,35 @@ void setup()
 }
 int counter = 0;
 
-void clearArray(unsigned char *array){
-  for (int i=0; i<5; i++){
+void clearArray(unsigned char *array) {
+  for (int i = 0; i < 5; i++) {
     array[i] = ' ';
   }
 }
 
-void insertData(unsigned char *dataStructArray, unsigned char *tempArr){
-  for (int i=0; i<5; i++){
-    dataStructArray[i]=tempArr[i];
+void insertData(unsigned char *dataStructArray, unsigned char *tempArr) {
+  for (int i = 0; i < 5; i++) {
+    dataStructArray[i] = tempArr[i];
   }
 }
 
 void loop()
 {
-  //  SerialUSB.print("Waiting...");
+//    SerialUSB.println("Waiting...");
+  
   unsigned char temp;
   unsigned char tempArr[5];
 
-  for (int i = 0; i < 5; i++){
+  for (int i = 0; i < 5; i++) {
     tempArr[i] = ' ';
   }
-  
+
   if (Serial1.available() > 0) {
+    SerialUSB.println(counter);
     Serial1.readBytesUntil(',', tempArr, 5);
+    SerialUSB.print("TempArr = ");
+    SerialUSB.print((char*)tempArr);
+    SerialUSB.println();
     //      SerialUSB.print("TempArr = ");
     //      SerialUSB.print((char*)tempArr);
     //      SerialUSB.println();
@@ -131,14 +136,14 @@ void loop()
       SerialUSB.print("TempArr = ");
       SerialUSB.print((char*)tempArr);
       SerialUSB.println();
-//      for (int i = 0; i < 5; i++){
-//        packetData.frontBrakePressureFirstByte[i] = ' ';    
-//      }
+      //      for (int i = 0; i < 5; i++){
+      //        packetData.frontBrakePressureFirstByte[i] = ' ';
+      //      }
       clearArray(packetData.frontBrakePressureFirstByte);
-      
-//      for (int i = 0; i < 5; i++) {
-//        packetData.frontBrakePressureFirstByte[i] = tempArr[i];
-//      }
+
+      //      for (int i = 0; i < 5; i++) {
+      //        packetData.frontBrakePressureFirstByte[i] = tempArr[i];
+      //      }
       insertData(packetData.frontBrakePressureFirstByte, tempArr);
       counter++;
     }
@@ -269,21 +274,21 @@ void loop()
 
 
     // SENDING MESSAGE LOGIC
-//    SerialUSB.print("counter: ");
-//    SerialUSB.print(counter);
+    //    SerialUSB.print("counter: ");
+    //    SerialUSB.print(counter);
     if (counter == 16) {
       SerialUSB.println("SENDING MESSAGE");
 
-//      for (int i=0; i < 5; i++){
-//        SerialUSB.print((char)packetData.frontBrakePressureFirstByte[i]);
-//      }
-//      SerialUSB.println();
-//      SerialUSB.print((char*)packetData.frontBrakePressureFirstByte);
-//      SerialUSB.println();
-//      SerialUSB.println();
-//      SerialUSB.println((char*)packetData.frontBrakePressureSecondByte);
-//      SerialUSB.println((char*)packetData.rearBrakePressureFirstByte);
-//      SerialUSB.println((char*)packetData.rearBrakePressureSecondByte);
+      //      for (int i=0; i < 5; i++){
+      //        SerialUSB.print((char)packetData.frontBrakePressureFirstByte[i]);
+      //      }
+      //      SerialUSB.println();
+      //      SerialUSB.print((char*)packetData.frontBrakePressureFirstByte);
+      //      SerialUSB.println();
+      //      SerialUSB.println();
+      //      SerialUSB.println((char*)packetData.frontBrakePressureSecondByte);
+      //      SerialUSB.println((char*)packetData.rearBrakePressureFirstByte);
+      //      SerialUSB.println((char*)packetData.rearBrakePressureSecondByte);
       memcpy(tx_buf, &packetData, sizeof(packetData));
       byte zize = sizeof(packetData);
 
@@ -292,7 +297,7 @@ void loop()
       rf95.send((uint8_t *)tx_buf, zize);
       rf95.waitPacketSent();
       SerialUSB.println("Sent Msg");
-      counter=0;
+      counter = 0;
       //
       //    // Now wait for a reply
       byte buf[RH_RF95_MAX_MESSAGE_LEN];
