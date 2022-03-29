@@ -45,7 +45,7 @@ style.use("bmh")
 
 #format the graph with the given ylabel and ylimit axis
 def formatGraph(fig, yLabel, yLim):
-	fig.set_ylabel(yLabel)
+	fig.set_ylabel(yLabel,ha='right', rotation='horizontal')
 	fig.set_ylim(yLim)
 
 #update the data to be displayed placeholder for now
@@ -82,16 +82,26 @@ def animate(i, app):
 	
 	#if i put all the titles in a list then i can just use the for loop above to do all the formatting
 	#format Graphs
-	formatGraph(app.ax1, "Ax1's \ngraph \ny label", (-1,11))
-	formatGraph(app.ax2, "Ax2's \ngraph \ny label", (0,10))
-	formatGraph(app.ax3, "Ax3's \ngraph \ny label", (0,10))
-	formatGraph(app.ax4, "Ax4's \ngraph \ny label", (-5,5))
-	formatGraph(app.ax5, "Ax5's \ngraph \ny label", (0,10))
-	formatGraph(app.ax6, "Ax6's \ngraph \ny label", (0,5))
-	formatGraph(app.ax7, "Ax7's \ngraph \ny label", (0,10))
-	formatGraph(app.ax8, "Ax8's \ngraph \ny label", (5,10))
-	formatGraph(app.ax9, "Ax9's \ngraph \ny label", (0,10))
-	app.ax9.set_xlabel("Data Point")
+	formatGraph(app.ax1, "Throttle Position", (-1,11))
+	formatGraph(app.ax2, "Engine Speed", (0,10))
+	formatGraph(app.ax3, "Fuel Pressure", (0,10))
+	formatGraph(app.ax4, "Engine Oil Pressure", (-5,5))
+	formatGraph(app.ax5, "Engine Oil Temp", (0,10))
+	formatGraph(app.ax6, "Coolant Temp", (0,5))
+	formatGraph(app.ax7, "Gear", (0,10))
+	formatGraph(app.ax8, "Exhaust Lambda", (5,10))
+	formatGraph(app.ax9, "Break Pressure", (0,10))
+	# formatGraph(app.ax1, "Ax1's \ngraph \ny label", (-1,11))
+	# formatGraph(app.ax2, "Ax2's \ngraph \ny label", (0,10))
+	# formatGraph(app.ax3, "Ax3's \ngraph \ny label", (0,10))
+	# formatGraph(app.ax4, "Ax4's \ngraph \ny label", (-5,5))
+	# formatGraph(app.ax5, "Ax5's \ngraph \ny label", (0,10))
+	# formatGraph(app.ax6, "Ax6's \ngraph \ny label", (0,5))
+	# formatGraph(app.ax7, "Ax7's \ngraph \ny label", (0,10))
+	# formatGraph(app.ax8, "Ax8's \ngraph \ny label", (5,10))
+	# formatGraph(app.ax9, "Ax9's \ngraph \ny label", (0,10))
+	app.ax9.set_xlabel("Time(s)")
+	# app.ax9.set_xlabel("Data Point")
 	# app.ax9.set_xticks(rotation=45)
 	plt.setp(app.ax9.get_xticklabels(), rotation=45, ha="right",
          rotation_mode="anchor")

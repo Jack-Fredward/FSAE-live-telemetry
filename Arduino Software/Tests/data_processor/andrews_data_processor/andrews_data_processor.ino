@@ -166,8 +166,8 @@ void loop() {
       packetData.rearBrakePressureSecondByte = convertHexToDec(in_buff);
     }
 
-    Serial.println("--------------------------------------------------------------------------");
-
+//    Serial.println("--------------------------------------------------------------------------");
+///**
     if((packetData.throttlePositionFirstByte != 0) && (packetData.throttlePositionSecondByte != 0)){
       Serial.print("Throttle Position: ");
       Serial.println(convert_throttle(andrewsConversion(packetData.throttlePositionFirstByte, packetData.throttlePositionSecondByte), 100));
@@ -219,7 +219,7 @@ void loop() {
       Serial.println(convert_lambda(andrewsConversion(-16, packetData.exhaustLambdaByte), 100));
       packetData.exhaustLambdaByte = 0;
     }
-
+//**/
     if((packetData.frontBrakePressureFirstByte != 0) && (packetData.frontBrakePressureSecondByte != 0)){
       Serial.print("Front Brake Pressure: ");
       Serial.println(convert_kPa_psi(andrewsConversion(packetData.frontBrakePressureFirstByte, packetData.frontBrakePressureSecondByte), 100));
