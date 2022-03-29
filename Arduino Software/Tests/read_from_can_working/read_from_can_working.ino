@@ -107,85 +107,78 @@ void send_data(unsigned char mybuf[], int len){
 // this loop is repeated forever
 void loop() {
     unsigned char len = 0;
-    unsigned char buf[8];
+    unsigned char canData[8];
     unsigned char mybuf[9];
 //    int mylen = 0;
 
     if (CAN_MSGAVAIL == CAN.checkReceive()) {         // check if data coming
-        CAN.readMsgBuf(&len, buf);    // read data,  len: data length, buf: data buf
+        CAN.readMsgBuf(&len, canData);    // read data,  len: data length, buf: data buf
 //        SERIAL_PORT_MONITOR.print("Length");
 //        SERIAL_PORT_MONITOR.print(len);
 //        SERIAL_PORT_MONITOR.println();
         unsigned long canId = CAN.getCanId();
         switch(canId) {
-          case 1600: 
-            mybuf[0]='S';
-            mybuf[1]=buf[0];
-            mybuf[2]=buf[1];
-            Serial.print('S');
-            Serial.print(buf[0]);
-            Serial.print(buf[1]);
-            Serial.println();
-            mybuf[3]='M';
-            mybuf[4]=buf[2];
-            mybuf[5]=buf[3];
-            Serial.print('M');
-            Serial.print(buf[2]);
-            Serial.print(buf[3]);
-            Serial.println();
-            mybuf[6]='P';
-            mybuf[7]=buf[6];
-            mybuf[8]=buf[7];
-            Serial.print('P');
-            Serial.print(buf[6]);
-            Serial.print(buf[7]);
-            Serial.println();
-//            display_data(mybuf);
-//            send_data(mybuf, 9);
+          case 1600:
+          //Throttle position
+          Serial.print('t');
+          Serial.print(canData[6]);
+          Serial.print('T');
+          Serial.print(canData[7]);
+          //Engine Speed
+          Serial.print('e');
+          Serial.print(canData[0]);
+          Serial.print('E');
+          Serial.print(canData[1]);
           break;
+          
           case 1601:
-            mybuf[0]='R';
-            mybuf[1]=buf[4];
-            mybuf[2]=buf[5];
-            Serial.print('R');
-            Serial.print(buf[4]);
-            Serial.print(buf[5]);
-            Serial.println();
-//            display_data(mybuf);
-//            send_data(mybuf,3);
-
+          //Fuel Pressure
+          Serial.print('u');
+          Serial.print(canData[4]);
+          Serial.print('U');
+          Serial.print(canData[5]);
           break;
-          case 1602:
-          mybuf[0]='T';
-          mybuf[1]=buf[0];
-          mybuf[2]=buf[1];
-//          display_data(mybuf);
-//          send_data(mybuf,3);
-
-          break;
+          
           case 1604:
-          mybuf[0]='O';
-          mybuf[1]=buf[6];
-          mybuf[2]=buf[7];
-//          display_data(mybuf);
-//          send_data(mybuf, 3);
-
+          //Oil Pressure
+          Serial.print('p');
+          Serial.print(canData[6]);
+          Serial.print('P');
+          Serial.print(canData[7]);
           break;
+          
           case 1609:
-          mybuf[0]='U';
-          mybuf[1]=buf[0];
-          mybuf[2]='V';
-          mybuf[3]=buf[5];
-//          display_data(mybuf);
-//          send_data(mybuf, 4);
-
+          //Oil Temp
+          Serial.print('O');
+          Serial.print(canData[1]);
+          //Water Temp
+          Serial.print('W');
+          Serial.print(canData[0]);
           break;
+          
           case 1613:
-          mybuf[0]='G';
-          mybuf[1]=buf[6];
-//          display_data(mybuf);
-//          send_data(mybuf, 2);
-
+          //Gear
+          Serial.print('G');
+          Serial.print(canData[6]);
+          break;
+          
+          case 1617:
+          //Lambda
+          Serial.print('L');
+          Serial.print(canData[0]);
+          break;
+          
+          case 1621:
+          //Front Break Pressure
+          Serial.print('f');
+          Serial.print(canData[0]);
+          Serial.print('F');
+          Serial.print(canData[1]);
+          //Rear Break Pressure
+          Serial.print('r');
+          Serial.print(canData[2]);
+          Serial.print('R');
+          Serial.print(canData[3]);
           break;
         }
 

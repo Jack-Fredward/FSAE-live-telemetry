@@ -7,6 +7,7 @@
 // #define CAN_2518FD
 
 // Set SPI CS Pin according to your hardware
+// Changed stuff
 
 #if defined(SEEED_WIO_TERMINAL) && defined(CAN_2518FD)
 // For Wio Terminal w/ MCP2518FD RPi Hat：
@@ -61,39 +62,91 @@ void loop() {
         CAN.readMsgBuf(&len, buf);    // read data,  len: data length, buf: data buf
         unsigned long canId = CAN.getCanId();
         switch(canId) {
-//          case 1609:
-          case 1601:
-          //fuel pressure
-//          SERIAL_PORT_MONITOR.print(buf[4]);
-//          SERIAL_PORT_MONITOR.print(buf[4], HEX);
-//          SERIAL_PORT_MONITOR.print(buf[5], HEX);
-//          SERIAL_PORT_MONITOR.print(" ");
-          SERIAL_PORT_MONITOR.println(buf[4], DEC);
-          SERIAL_PORT_MONITOR.println(buf[4]);
-          SERIAL_PORT_MONITOR.println((char)buf[4]);
-          SERIAL_PORT_MONITOR.println((buf[4]/6.89475729)/10);
-          SERIAL_PORT_MONITOR.println(buf[5], DEC);
-          SERIAL_PORT_MONITOR.println(buf[5]);
-          SERIAL_PORT_MONITOR.println((char)buf[5]);
-          SERIAL_PORT_MONITOR.println((buf[5]/6.89475729)/10);
-//          SERIAL_PORT_MONITOR.print(buf[5]);
-          Serial.print('f');
-          Serial.print(buf[4]);
-          Serial.print(',');
-          Serial.print('F');
-          Serial.print(buf[5]);
-          Serial.print(',');
-          SERIAL_PORT_MONITOR.println();
-          break;
-        }
+          case 1600:
+            //Engine Speed
+            Serial.print('e');
+            Serial.print(buf[0]);
+            Serial.print(',');
+            Serial.print('E');
+            Serial.print(buf[1]);
+            Serial.print(',');
+            //Throttle position
+            Serial.print('t');
+            Serial.print(buf[6]);
+            Serial.print(',');
+            Serial.print('T');
+            Serial.print(buf[7]);
+            Serial.print(',');
+            break;
 
+          case 1601:
+            //fuel pressure
+            Serial.print('u');
+            Serial.print(buf[4]);
+            Serial.print(',');
+            Serial.print('U');
+            Serial.print(buf[5]);
+            Serial.print(',');
+            break;
+
+          case 1604:
+            //Oil Pressure
+            Serial.print('p');
+            Serial.print(buf[6]);
+            Serial.print(',');
+            Serial.print('P');
+            Serial.print(buf[7]);
+            Serial.print(',');
+            break;
+
+          case 1609:
+            //Water Temp
+            Serial.print('W');
+            Serial.print(buf[0]);
+            Serial.print(',');
+            //Oil Temp
+            Serial.print('O');
+            Serial.print(buf[1]);
+            Serial.print(',');
+            break;
+
+          case 1613:
+            //Gear
+            Serial.print('G');
+            Serial.print(buf[6]);
+            Serial.print(',');
+            break;
+
+          case 1617:
+            //Lambda
+            Serial.print('L');
+            Serial.print(buf[0]);
+            Serial.print(',');
+            break;
+          
+          case 1621:
+            //front break pressure
+            Serial.print('f');
+            Serial.print(buf[0]);
+            Serial.print(',');
+            Serial.print('F');
+            Serial.print(buf[1]);
+            Serial.print(',');
+            //rear break pressure
+            Serial.print('r');
+            Serial.print(buf[2]);
+            Serial.print(',');
+            Serial.print('R');
+            Serial.print(buf[3]);
+            Serial.print(',');
+            break;
+          
+        }
         delay(10);
-        
     }
     else {
 //      SERIAL_PORT_MONITOR.println(CAN.checkReceive());
     }
-    
 }
 
 /*********************************************************************************************************

@@ -5,6 +5,8 @@
   www.github.com/PaulStoffregen/RadioHeadd
 */
 
+// Last Update 3/22/2022
+
 #include <SPI.h>
 
 //Radio Head Library: 
@@ -25,17 +27,34 @@ long timeSinceLastPacket = 0; //Tracks the time stamp of last packet received
 //float frequency = 864.1;
 float frequency = 921.2;
 
-struct dataStruct{
-  unsigned char mybuf[10];
-}myData;
+struct packetDataStruct {
+  unsigned char throttlePositionFirstByte[5];
+  unsigned char throttlePositionSecondByte[5];
+  unsigned char engineSpeedFirstByte[5];
+  unsigned char engineSpeedSecondByte[5];
+  unsigned char fuelPressureFirstByte[5];
+  unsigned char fuelPressureSecondByte[5];
+  unsigned char engineOilPressureFirstByte[5];
+  unsigned char engineOilPressureSecondByte[5];
+  unsigned char engineOilTemperatureByte[5];
+  unsigned char coolantTemperatureByte[5];
+  unsigned char gearByte[5];
+  unsigned char exhaustLambdaByte[5];
+  unsigned char frontBrakePressureFirstByte[5];
+  unsigned char frontBrakePressureSecondByte[5];
+  unsigned char rearBrakePressureFirstByte[5];
+  unsigned char rearBrakePressureSecondByte[5];
+} packetData;
 
 void setup()
 {
   pinMode(LED, OUTPUT);
 
   SerialUSB.begin(115200);
+  Serial1.begin(115200);
   // It may be difficult to read serial messages on startup. The following
   // line will wait for serial to be ready before continuing. Comment out if not needed.
+  while(!SerialUSB);
   while(!SerialUSB);
   SerialUSB.println("RFM Server!");
 
@@ -62,8 +81,17 @@ void setup()
    rf95.setTxPower(14, false);
 }
 
+void sendData(unsigned char *dataStructArray){
+  for (int i=0; i<5; i++){
+    Serial1.print((char)dataStructArray[i]);
+  }
+  Serial1.println();
+}
+
+
 void loop()
 {
+//  SerialUSB.println("Reciver loop");
   if (rf95.available()){
     // Should be a message for us now
     uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
@@ -73,9 +101,69 @@ void loop()
       digitalWrite(LED, HIGH); //Turn on status LED
       timeSinceLastPacket = millis(); //Timestamp this packet
 
-      SerialUSB.print("Got message: ");
-      memcpy(&myData, buf, sizeof(myData));
-      SerialUSB.print((char*)myData.mybuf);
+//      SerialUSB.print("Got message: ");
+//      memcpy(&myData, buf, sizeof(myData));
+//      SerialUSB.print((char*)myData.mybuf);
+//      Serial1.println((char*)myData.mybuf);
+//      //SerialUSB.print(" RSSI: ");
+//      //SerialUSB.print(rf95.lastRssi(), DEC);
+//      SerialUSB.println();
+
+      SerialUSB.println("Got message: ");
+      memcpy(&packetData, buf, sizeof(packetData));
+      SerialUSB.println((char*)packetData.throttlePositionFirstByte);
+//      Serial1.println((char*)packetData.frontBrakePressureFirstByte);
+//      SerialUSB.println((char*)packetData.frontBrakePressureSecondByte);
+//      Serial1.println((char*)packetData.frontBrakePressureSecondByte);
+//      SerialUSB.println((char*)packetData.rearBrakePressureFirstByte);
+//      Serial1.println((char*)packetData.rearBrakePressureFirstByte);
+//      SerialUSB.println((char*)packetData.rearBrakePressureSecondByte);
+//      Serial1.println((char*)packetData.rearBrakePressureSecondByte);
+
+//      for (int i = 0; i < 5; i++){
+//        Serial1.print((char)packetData.frontBrakePressureFirstByte[i]);
+////        SerialUSB.print((char)packetData.frontBrakePressureFirstByte[i]);
+//      }
+//      Serial1.println();
+
+
+
+      sendData(packetData.throttlePositionFirstByte);
+      sendData(packetData.throttlePositionSecondByte);
+      sendData(packetData.engineSpeedFirstByte);
+      sendData(packetData.engineSpeedSecondByte);
+      sendData(packetData.fuelPressureFirstByte);
+      sendData(packetData.fuelPressureSecondByte);
+      sendData(packetData.engineOilPressureFirstByte);
+      sendData(packetData.engineOilPressureSecondByte);
+      sendData(packetData.engineOilTemperatureByte);
+      sendData(packetData.coolantTemperatureByte);
+      sendData(packetData.gearByte);
+      sendData(packetData.exhaustLambdaByte);
+      sendData(packetData.frontBrakePressureFirstByte);
+      sendData(packetData.frontBrakePressureSecondByte);
+      sendData(packetData.rearBrakePressureFirstByte);
+      sendData(packetData.rearBrakePressureSecondByte);
+
+      
+////      SerialUSB.println();
+//      for (int i = 0; i < 5; i++){
+//        Serial1.print((char)packetData.frontBrakePressureSecondByte[i]);
+////        SerialUSB.print((char)packetData.frontBrakePressureSecondByte[i]);
+//      }
+//      Serial1.println();
+////      SerialUSB.println();
+//      for (int i = 0; i < 5; i++){
+//        Serial1.print((char)packetData.rearBrakePressureFirstByte[i]);
+////        SerialUSB.print((char)packetData.rearBrakePressureFirstByte[i]);
+//      }
+//      Serial1.println();
+//      SerialUSB.println();
+//      for (int i = 0; i < 5; i++){
+//        Serial1.print((char)packetData.rearBrakePressureSecondByte[i]);
+////        SerialUSB.print((char)packetData.rearBrakePressureSecondByte[i]);
+//      }
+      Serial1.println();
       //SerialUSB.print(" RSSI: ");
       //SerialUSB.print(rf95.lastRssi(), DEC);
       SerialUSB.println();
