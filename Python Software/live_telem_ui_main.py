@@ -144,22 +144,22 @@ def animate(i, xList, throttle_position_data,engine_speed_data,fuel_pressure_dat
 	# for eachLine in dataList:
 		# if len(eachLine)>1:
 			# x, y = eachLine.split(',')
-	xList.append(dt.datetime.now().strftime('%H:%M:%S.%f'))
+	xList.append(dt.datetime.now().strftime('%H:%M:%S'))
 	# yList.append(front_brake_pressure)
+	num_of_datapoints = 10
+	xList = xList[-int(num_of_datapoints):]
+	# yList = yList[-int(num_of_datapoints):]
 
-	xList = xList[-20:]
-	# yList = yList[-20:]
-
-	throttle_position_data = throttle_position_data[-20:]
-	engine_speed_data = engine_speed_data[-20:]
-	fuel_pressure_data = fuel_pressure_data[-20:]
-	engine_oil_pressure_data = engine_oil_pressure_data[-20:]
-	engine_oil_temp_data = engine_oil_temp_data[-20:]
-	coolant_temp_data = coolant_temp_data[-20:]
-	gear_data = gear_data[-20:]
-	exhaust_lambda_data = exhaust_lambda_data[-20:]
-	front_brake_pressure_data = front_brake_pressure_data[-20:]
-	rear_brake_pressure_data = rear_brake_pressure_data[-20:]
+	throttle_position_data = throttle_position_data[-int(num_of_datapoints):]
+	engine_speed_data = engine_speed_data[-int(num_of_datapoints):]
+	fuel_pressure_data = fuel_pressure_data[-int(num_of_datapoints):]
+	engine_oil_pressure_data = engine_oil_pressure_data[-int(num_of_datapoints):]
+	engine_oil_temp_data = engine_oil_temp_data[-int(num_of_datapoints):]
+	coolant_temp_data = coolant_temp_data[-int(num_of_datapoints):]
+	gear_data = gear_data[-int(num_of_datapoints):]
+	exhaust_lambda_data = exhaust_lambda_data[-int(num_of_datapoints):]
+	front_brake_pressure_data = front_brake_pressure_data[-int(num_of_datapoints):]
+	rear_brake_pressure_data = rear_brake_pressure_data[-int(num_of_datapoints):]
 
 
 	data = [throttle_position_data, engine_speed_data, fuel_pressure_data, engine_oil_pressure_data, engine_oil_temp_data, coolant_temp_data, gear_data, exhaust_lambda_data, front_brake_pressure_data, rear_brake_pressure_data]
@@ -171,6 +171,7 @@ def animate(i, xList, throttle_position_data,engine_speed_data,fuel_pressure_dat
 	colors = ['b', 'g', 'r', 'k', 'y','b', 'g', 'r', 'k','r']
 	markers = ['o-','.-','o--','.--','s-','s:','*--','|-','_-','.--']
 	# subplots = app.f.get_axes()
+	sensors = ["Throttle Position", "Engine Speed", "Fuel Pressure", "Engine Oil Pressure", "Engine Oil Temp", "Coolant Temp", "Gear", "Exhaust Lambda", "Front Brake \nPressure", "Rear Brake \nPressure"]
 
 
 	for subplot in app.f.get_axes():
@@ -178,8 +179,23 @@ def animate(i, xList, throttle_position_data,engine_speed_data,fuel_pressure_dat
 		subplot.cla()
 		try:
 			subplot.plot(xList,data[i],colors[i]+markers[i])
+			
+			# formatGraph(subplot, str(data[i][-1]))
 		except:
 			print("cant plot")
+		
+		try:
+			label = sensors[i] + "\n" + str(data[i][-1])
+			subplot.set_ylabel(label,ha='right', labelpad=10,rotation='horizontal')
+			# subplot.set_ylabel(str(data[i][-1]),ha='right', labelpad=10,rotation='horizontal')
+		# 	# subplot.yaxis.set_label_position("right")
+		# 	second_y_label = subplot.twinx()
+		# 	second_y_label.set_ylabel(str(data[i][-1]),rotation='horizontal')
+		# 	# subplot.ylabel(data[i], rotation='horizontal')
+		# 	# subplot.yaxis.set_label_position("left")
+		except:
+			print("cant label")
+		
 		# subplot.plot(xList,yList,colors[i]+markers[i])
 		i=i+1
 	
@@ -188,16 +204,16 @@ def animate(i, xList, throttle_position_data,engine_speed_data,fuel_pressure_dat
 
 	#if i put all the titles in a list then i can just use the for loop above to do all the formatting
 	#format Graphs
-	formatGraph(app.ax1, "Throttle Position", (-1,11))
-	formatGraph(app.ax2, "Engine Speed", (0,10))
-	formatGraph(app.ax3, "Fuel Pressure", (0,10))
-	formatGraph(app.ax4, "Engine Oil Pressure", (-5,5))
-	formatGraph(app.ax5, "Engine Oil Temp", (0,10))
-	formatGraph(app.ax6, "Coolant Temp", (0,5))
-	formatGraph(app.ax7, "Gear", (0,10))
-	formatGraph(app.ax8, "Exhaust Lambda", (5,10))
-	formatGraph(app.ax9, "Front Brake Pressure", (0,10))
-	formatGraph(app.ax10, "Rear Brake Pressure", (1,1))
+	# formatGraph(app.ax1, "Throttle Position", (-1,11))
+	# formatGraph(app.ax2, "Engine Speed", (0,10))
+	# formatGraph(app.ax3, "Fuel Pressure", (0,10))
+	# formatGraph(app.ax4, "Engine Oil Pressure", (-5,5))
+	# formatGraph(app.ax5, "Engine Oil Temp", (0,10))
+	# formatGraph(app.ax6, "Coolant Temp", (0,5))
+	# formatGraph(app.ax7, "Gear", (0,10))
+	# formatGraph(app.ax8, "Exhaust Lambda", (5,10))
+	# formatGraph(app.ax9, "Front Brake Pressure", (0,10))
+	# formatGraph(app.ax10, "Rear Brake Pressure", (1,1))
 	# formatGraph(app.ax1, "Ax1's \ngraph \ny label", (-1,11))
 	# formatGraph(app.ax2, "Ax2's \ngraph \ny label", (0,10))
 	# formatGraph(app.ax3, "Ax3's \ngraph \ny label", (0,10))

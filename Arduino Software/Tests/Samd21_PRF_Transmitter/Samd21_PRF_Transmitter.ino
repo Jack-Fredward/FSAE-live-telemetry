@@ -64,22 +64,22 @@ void setup()
 {
   pinMode(LED, OUTPUT);
 
-  SerialUSB.begin(115200);
+//  SerialUSB.begin(115200);
   Serial1.begin(115200);
   // It may be difficult to read serial messages on startup. The following line
   // will wait for serial to be ready before continuing. Comment out if not needed.
-  while (!SerialUSB);
+//  while (!SerialUSB);
   while (!Serial1);
-  SerialUSB.println("RFM Client!");
+//  SerialUSB.println("RFM Client!");
 
   //Initialize the Radio.
   if (rf95.init() == false) {
-    SerialUSB.println("Radio Init Failed - Freezing");
+//    SerialUSB.println("Radio Init Failed - Freezing");
     while (1);
   }
   else {
     //An LED inidicator to let us know radio initialization has completed.
-    SerialUSB.println("Transmitter up!");
+//    SerialUSB.println("Transmitter up!");
     digitalWrite(LED, HIGH);
     delay(500);
     digitalWrite(LED, LOW);
@@ -121,11 +121,11 @@ void loop()
   }
 
   if (Serial1.available() > 0) {
-    SerialUSB.println(counter);
+//    SerialUSB.println(counter);
     Serial1.readBytesUntil(',', tempArr, 5);
-    SerialUSB.print("TempArr = ");
-    SerialUSB.print((char*)tempArr);
-    SerialUSB.println();
+//    SerialUSB.print("TempArr = ");
+//    SerialUSB.print((char*)tempArr);
+//    SerialUSB.println();
     //      SerialUSB.print("TempArr = ");
     //      SerialUSB.print((char*)tempArr);
     //      SerialUSB.println();
@@ -133,9 +133,9 @@ void loop()
     //    SerialUSB.print((char*)tempArr);
     //    SerialUSB.println();
     if (((char)tempArr[0] == 'f')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       //      for (int i = 0; i < 5; i++){
       //        packetData.frontBrakePressureFirstByte[i] = ' ';
       //      }
@@ -151,121 +151,121 @@ void loop()
     else if (((char)tempArr[0] == 'F')) {
       //      SerialUSB.print("Temp = ");
       //      SerialUSB.print((char)temp);
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.frontBrakePressureSecondByte);
 
       insertData(packetData.frontBrakePressureSecondByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'r')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.rearBrakePressureFirstByte);
 
       insertData(packetData.rearBrakePressureFirstByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'R')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.rearBrakePressureSecondByte);
 
       insertData(packetData.rearBrakePressureSecondByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 't')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.throttlePositionFirstByte);
 
       insertData(packetData.throttlePositionFirstByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'T')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.throttlePositionSecondByte);
 
       insertData(packetData.throttlePositionSecondByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'e')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.engineSpeedFirstByte);
 
       insertData(packetData.engineSpeedFirstByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'E')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.engineSpeedSecondByte);
 
       insertData(packetData.engineSpeedSecondByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'u')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.fuelPressureFirstByte);
 
       insertData(packetData.fuelPressureFirstByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'U')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.fuelPressureSecondByte);
 
       insertData(packetData.fuelPressureSecondByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'p')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.engineOilPressureFirstByte);
 
       insertData(packetData.engineOilPressureFirstByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'P')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.engineOilPressureSecondByte);
 
       insertData(packetData.engineOilPressureSecondByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'O')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.engineOilTemperatureByte);
 
       insertData(packetData.engineOilTemperatureByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'W')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.coolantTemperatureByte);
 
       insertData(packetData.coolantTemperatureByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'G')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.gearByte);
 
       insertData(packetData.gearByte, tempArr);
       counter++;
     } else if (((char)tempArr[0] == 'L')) {
-      SerialUSB.print("TempArr = ");
-      SerialUSB.print((char*)tempArr);
-      SerialUSB.println();
+//      SerialUSB.print("TempArr = ");
+//      SerialUSB.print((char*)tempArr);
+//      SerialUSB.println();
       clearArray(packetData.exhaustLambdaByte);
 
       insertData(packetData.exhaustLambdaByte, tempArr);
@@ -277,7 +277,7 @@ void loop()
     //    SerialUSB.print("counter: ");
     //    SerialUSB.print(counter);
     if (counter == 16) {
-      SerialUSB.println("SENDING MESSAGE");
+//      SerialUSB.println("SENDING MESSAGE");
 
       //      for (int i=0; i < 5; i++){
       //        SerialUSB.print((char)packetData.frontBrakePressureFirstByte[i]);
@@ -296,7 +296,7 @@ void loop()
 
       rf95.send((uint8_t *)tx_buf, zize);
       rf95.waitPacketSent();
-      SerialUSB.println("Sent Msg");
+//      SerialUSB.println("Sent Msg");
       counter = 0;
       //
       //    // Now wait for a reply
@@ -311,14 +311,14 @@ void loop()
           //        SerialUSB.print(rf95.lastRssi(), DEC);
         }
         else {
-          SerialUSB.println("Receive failed");
+//          SerialUSB.println("Receive failed");
         }
       }
       else {
-        SerialUSB.println("No reply, is the receiver running?");
+//        SerialUSB.println("No reply, is the receiver running?");
       }
     } else {
-      SerialUSB.println("Did not send message");
+//      SerialUSB.println("Did not send message");
     }
   }
   delay(10);

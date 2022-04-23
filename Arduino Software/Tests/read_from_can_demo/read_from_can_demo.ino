@@ -61,6 +61,9 @@ void loop() {
     if (CAN_MSGAVAIL == CAN.checkReceive()) {         // check if data coming
         CAN.readMsgBuf(&len, buf);    // read data,  len: data length, buf: data buf
         unsigned long canId = CAN.getCanId();
+//        Serial.print(canId);
+//        Serial.print(buf);
+//        Serial.print((char*) buf);
         switch(canId) {
           case 1600:
             //Engine Speed
